@@ -1,0 +1,87 @@
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: story-maker-api
+spec:
+  # GCE Ingress has to be 'NodePort' or 'LoadBalancer'
+  type: LoadBalancer
+  ports:
+    - name: http
+      port: 80
+      targetPort: 5000
+  selector:
+    app: story-maker-api
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: story-maker-api
+spec:
+  serviceName: story-maker-api
+  replicas: 1
+  selector:
+    matchLabels:
+      app: story-maker-api
+  template:
+    metadata:
+      labels:
+        app: story-maker-api
+    spec:
+      containers:
+        - name: story-maker-api
+          image: jotaram/sm-api:main
+          ports:
+            - containerPort: 80
+          env:
+            - name: SECRET
+              value: "secret"
+            - name: CDN_HOST
+              value: "cdn.host"
+            - name: PUBLIC_PATH
+              value: "/"
+            - name: UPLOAD_STORAGE_PATH
+              value: "/static"
+            - name: POSTGRES_USER
+              value: "story_maker_user"
+            - name: POSTGRES_PASSWORD
+              value: "_POSTGRES_PASSWORD_"
+            - name: POSTGRES_DB
+              value: "_POSTGRES_DB_"
+            - name: POSTGRES_HOST
+              value: "_POSTGRES_HOST_"
+            - name: POSTGRES_PORT
+              value: "_POSTGRES_PORT_"
+            - name: POSTGRES_CA
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-ca
+                  key: certificate
+
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-story-maker-api
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+spec:
+  tls:
+    - hosts:
+        - story-maker-api.jrojaspin.com.ar
+      secretName: hello-kubernetes-tls-story-maker-api
+  rules:
+    - host: story-maker-api.jrojaspin.com.ar
+      http:
+        paths:
+          - pathType: Prefix
+            path: "/"
+            backend:
+              service:
+                name: story-maker-api
+                port:
+                  number: 80

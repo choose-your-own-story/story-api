@@ -1,0 +1,55 @@
+version: "3.4"
+
+x-logging:
+  &default-logging
+  driver: "json-file"
+  options:
+    max-size: "50M"
+    max-file: "5"
+
+services:
+  api:
+    container_name: api-story-maker
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    command: >
+      sh -c "yarn install && yarn tsc && yarn nodemon src/index.js"
+    working_dir: /app
+    volumes:
+      - ./:/app/
+      - ./storage:/storage
+    environment:
+      NODE_ENV: development.local
+      POSTGRES_HOST: ${POSTGRES_HOST}
+      POSTGRES_PORT: ${POSTGRES_PORT}
+      POSTGRES_USER: ${POSTGRES_API_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+      SECRET: ${SECRET}
+      UPLOAD_STORAGE_PATH: ${UPLOAD_STORAGE_PATH}
+      CDN_HOST: ${CDN_HOST}
+      PUBLIC_PATH: ${PUBLIC_PATH}
+      POSTGRES_CA: ${TEMP_POSTGRES_CA}
+    logging: *default-logging
+    ports:
+      - 3000:3000
+    links:
+      - postgres
+
+  postgres:
+    image: postgres:latest
+    container_name: story-maker-db
+    volumes:
+      - postgres_data:/var/lib/postgres
+      - ./pg-init:/docker-entrypoint-initdb.d
+    environment:
+      POSTGRES_HOST: ${POSTGRES_HOST}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_PORT: ${POSTGRES_PORT}
+    logging: *default-logging
+
+volumes:
+  postgres_data:
