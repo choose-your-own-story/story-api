@@ -41,9 +41,18 @@ var UploadRepository = /** @class */ (function () {
     function UploadRepository(configuration) {
         this.configuration = configuration;
     }
+    UploadRepository.prototype.download = function (response, multimediaType, multimediaId) {
+        return __awaiter(this, void 0, void 0, function () {
+            var imageName;
+            return __generator(this, function (_a) {
+                imageName = "/static/image/" + multimediaId;
+                return [2 /*return*/, imageName];
+            });
+        });
+    };
     UploadRepository.prototype.upload = function (request) {
         return __awaiter(this, void 0, void 0, function () {
-            var uploadType, sampleFile, baseServerPath, returnPath, method, imagePath, serverPath, clientPath, response;
+            var uploadType, sampleFile, baseServerPath, returnPath, method, imagePath, serverPath, clientPath, uploadedImageUrl;
             var _this = this;
             return __generator(this, function (_a) {
                 switch (_a.label) {
@@ -52,10 +61,18 @@ var UploadRepository = /** @class */ (function () {
                         sampleFile = request.file;
                         baseServerPath = this.configuration.storagePath + "/" + uploadType;
                         returnPath = "" + uploadType;
+                        console.log('base server path');
+                        console.log(baseServerPath);
                         method = 'webp';
                         imagePath = "" + Date.now().toString() + sampleFile.filename + "_reduced." + method;
+                        console.log('imagepath');
+                        console.log(imagePath);
                         serverPath = baseServerPath + "/" + imagePath;
+                        console.log('server path');
+                        console.log(serverPath);
                         clientPath = returnPath + "/" + imagePath;
+                        console.log('client path');
+                        console.log(clientPath);
                         return [4 /*yield*/, sharp(sampleFile.path).resize({
                                 width: 600
                             }).webp({
@@ -63,8 +80,10 @@ var UploadRepository = /** @class */ (function () {
                                 force: true
                             }).toFile(serverPath).then(function () { return _this.configuration.cdnServer + "/" + clientPath; })];
                     case 1:
-                        response = _a.sent();
-                        return [2 /*return*/, response];
+                        uploadedImageUrl = _a.sent();
+                        console.log('uplodaed image ulr');
+                        console.log(uploadedImageUrl);
+                        return [2 /*return*/, uploadedImageUrl];
                 }
             });
         });

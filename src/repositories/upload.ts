@@ -9,6 +9,11 @@ class UploadRepository {
     this.configuration = configuration;
   }
 
+  async download(response: express.Response, multimediaType: string, multimediaId: string) {
+    const imageName = `/static/image/${multimediaId}`;
+    return imageName;
+  }
+
   async upload(request: express.Request) {
     const uploadType = request.query.type;
 
@@ -25,7 +30,7 @@ class UploadRepository {
     const serverPath: string = `${baseServerPath}/${imagePath}`;
     const clientPath: string = `${returnPath}/${imagePath}`;
 
-    const response = await sharp(sampleFile.path).resize({
+    const uploadedImageUrl = await sharp(sampleFile.path).resize({
       width: 600
     }).webp({
       quality: 100,
@@ -36,7 +41,7 @@ class UploadRepository {
         () => `${this.configuration.cdnServer}/${clientPath}`
     );
 
-    return response
+    return uploadedImageUrl
   }
 
 }

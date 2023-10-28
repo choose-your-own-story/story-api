@@ -26,7 +26,7 @@ var checkToken = function (req, res, next) {
         { uri: publicPath + "api/library", method: 'GET' },
         { uri: publicPath + "api/library", method: 'POST' },
         { uri: publicPath + "api/library", method: 'DELETE' },
-        { uri: publicPath + "image", method: 'GET' }
+        { uri: publicPath + "api/multimedia", method: 'GET' }
     ];
     var foundNoneSecure = noneSecure.filter(function (location) {
         return req.originalUrl.startsWith(location.uri) && req.method === location.method;
@@ -67,7 +67,7 @@ app.use(bodyParser.json());
 app.use(cors());
 app.use(morgan('tiny'));
 app.use(checkToken);
-app.use(publicPath + "image", express.static('/storage/image'));
+//app.use(`${publicPath}multimedia`, express.static('/static'));
 var book_1 = __importDefault(require("./controllers/book"));
 var book_2 = __importDefault(require("./repositories/book"));
 var user_1 = __importDefault(require("./repositories/user"));

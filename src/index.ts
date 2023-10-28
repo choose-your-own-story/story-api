@@ -27,7 +27,7 @@ const checkToken = (req: express.Request, res: express.Response, next: Function)
     { uri: `${publicPath}api/library`, method: 'GET' },
     { uri: `${publicPath}api/library`, method: 'POST' },
     { uri: `${publicPath}api/library`, method: 'DELETE' },
-    { uri: `${publicPath}image`, method: 'GET' }
+    { uri: `${publicPath}api/multimedia`, method: 'GET' }
   ];
 
   const foundNoneSecure: Array<any> = noneSecure.filter(function(location) {
@@ -80,8 +80,6 @@ app.use(bodyParser.json());
 app.use(cors());
 app.use(morgan('tiny'));
 app.use(checkToken);
-
-app.use(`${publicPath}image`, express.static('/storage/image'));
 
 import BookController from './controllers/book';
 import BookRepository from './repositories/book';

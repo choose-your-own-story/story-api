@@ -35,4 +35,3 @@ While standing in the root directory
 docker build -t jotaram/story-maker-api:<x.y.z> .
 docker image push jotaram/story-maker-api:<x.y.z>
 ```
- 

@@ -9,6 +9,12 @@ class UploadController {
     this.uploadRepository = uploadRepository;
 
     app.post('/api/upload/image', upload.single('file'), this.upload.bind(this));
+    app.get('/api/multimedia/:kind/:multimediaId', this.downloadMultimedia.bind(this));
+  }
+
+  async downloadMultimedia(request: any, response: express.Response) {
+    const imagePath = await this.uploadRepository.download(response, request.params.kind, request.params.multimediaId);
+    response.status(200).sendFile(imagePath);
   }
 
   async upload (request: any, response: express.Response) {

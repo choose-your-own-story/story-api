@@ -40,7 +40,22 @@ var UploadController = /** @class */ (function () {
     function UploadController(app, upload, uploadRepository) {
         this.uploadRepository = uploadRepository;
         app.post('/api/upload/image', upload.single('file'), this.upload.bind(this));
+        app.get('/api/multimedia/:kind/:multimediaId', this.downloadMultimedia.bind(this));
     }
+    UploadController.prototype.downloadMultimedia = function (request, response) {
+        return __awaiter(this, void 0, void 0, function () {
+            var imagePath;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.uploadRepository.download(response, request.params.kind, request.params.multimediaId)];
+                    case 1:
+                        imagePath = _a.sent();
+                        response.status(200).sendFile(imagePath);
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
     UploadController.prototype.upload = function (request, response) {
         return __awaiter(this, void 0, void 0, function () {
             var uploadStatus;
