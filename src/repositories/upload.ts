@@ -1,5 +1,6 @@
 import express = require('express');
 import sharp = require('sharp');
+import fs = require('fs');
 
 class UploadRepository {
 
@@ -22,6 +23,11 @@ class UploadRepository {
 
     // Use the mv() method to place the file somewhere on your server
     const baseServerPath: string = `${this.configuration.storagePath}/${uploadType}`;
+
+    if (!fs.existsSync(baseServerPath)){
+      fs.mkdirSync(baseServerPath, { recursive: true });
+    }
+
     const returnPath: string = `${uploadType}`;
 
     const method: string = 'webp';

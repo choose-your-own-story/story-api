@@ -67,7 +67,6 @@ app.use(bodyParser.json());
 app.use(cors());
 app.use(morgan('tiny'));
 app.use(checkToken);
-//app.use(`${publicPath}multimedia`, express.static('/static'));
 var book_1 = __importDefault(require("./controllers/book"));
 var book_2 = __importDefault(require("./repositories/book"));
 var user_1 = __importDefault(require("./repositories/user"));
