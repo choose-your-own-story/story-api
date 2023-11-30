@@ -31,11 +31,14 @@ services:
       CDN_HOST: ${CDN_HOST}
       PUBLIC_PATH: ${PUBLIC_PATH}
       POSTGRES_CA: ${TEMP_POSTGRES_CA}
+      ENVIRONMENT: local
     logging: *default-logging
     ports:
       - 3000:3000
     links:
       - postgres
+    networks:
+      - choose_your_own_adventure_network
 
   postgres:
     image: postgres:latest
@@ -49,7 +52,14 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_PORT: ${POSTGRES_PORT}
+    ports:
+      - "5432:5432"
     logging: *default-logging
+    networks:
+      - choose_your_own_adventure_network
 
 volumes:
   postgres_data:
+
+networks:
+  choose_your_own_adventure_network:

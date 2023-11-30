@@ -1,4 +1,4 @@
-FROM node:alpine3.12
+FROM node:20-alpine3.18
 COPY . .
 RUN mkdir /static
 RUN mkdir /static/image

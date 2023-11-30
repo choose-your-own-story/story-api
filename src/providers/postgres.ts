@@ -5,17 +5,23 @@ class PostgresProvider {
   pool: pg.Pool;
 
   constructor() {
-    this.pool = new pg.Pool({
+    let sslOptionsOn ={
+      rejectUnauthorized: false,
+      ca: process.env.POSTGRES_CA
+    };
+    let sslOptionsOff = false;
+
+    let sslOptions = process.env.ENVIRONMENT === 'production'? sslOptionsOn: sslOptionsOff;
+
+    let pgOptions = {
       user: process.env.POSTGRES_USER,
       host: process.env.POSTGRES_HOST,
       database: process.env.POSTGRES_DB,
       password: process.env.POSTGRES_PASSWORD,
       port: Number(process.env.POSTGRES_PORT),
-      ssl: {
-        rejectUnauthorized: false,
-        ca: process.env.POSTGRES_CA
-      }
-    });
+      ssl: sslOptions
+    };
+    this.pool = new pg.Pool(pgOptions);
   }
 
   instance() {
