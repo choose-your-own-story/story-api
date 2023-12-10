@@ -1,5 +1,6 @@
 import UploadRepository from "../repositories/upload";
 import express = require('express');
+import {NextFunction} from "express";
 
 class UploadController {
 
@@ -9,24 +10,23 @@ class UploadController {
     this.uploadRepository = uploadRepository;
 
     app.post('/api/upload/image', upload.single('file'), this.upload.bind(this));
-    app.get('/api/multimedia/:kind/:multimediaId', this.downloadMultimedia.bind(this));
   }
 
-  async downloadMultimedia(request: any, response: express.Response) {
-    const imagePath = await this.uploadRepository.download(response, request.params.kind, request.params.multimediaId);
-    response.status(200).sendFile(imagePath);
-  }
+  async upload (request: any, response: express.Response, next: NextFunction) {
+    try {
+      if (request.query.type === undefined)
+        return response.status(400).send('invalid params: missing type');
 
-  async upload (request: any, response: express.Response) {
-    if (request.query.type === undefined)
-      return response.status(400).send('invalid params: missing type');
+      if (!request.file) {
+        return response.status(400).send('No files were uploaded.');
+      }
 
-    if (!request.file) {
-      return response.status(400).send('No files were uploaded.');
+      const uploadStatus= await this.uploadRepository.upload(request);
+      response.status(200).send(uploadStatus);
     }
-
-    const uploadStatus: string = await this.uploadRepository.upload(request);
-    response.status(200).send(uploadStatus);
+    catch (error) {
+      next(error);
+    }
   }
 }
 

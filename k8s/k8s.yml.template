@@ -38,8 +38,6 @@ spec:
           env:
             - name: SECRET
               value: "secret"
-            - name: CDN_HOST
-              value: "cdn.host"
             - name: PUBLIC_PATH
               value: "/"
             - name: UPLOAD_STORAGE_PATH
@@ -59,6 +57,14 @@ spec:
                 secretKeyRef:
                   name: postgres-ca
                   key: certificate
+            - name: DO_SPACES_ENDPOINT
+              value: "nyc3.digitaloceanspaces.com"
+            - name: DO_SPACES_KEY
+              value: "_DO_SPACES_KEY_"
+            - name: DO_SPACES_SECRET
+              value: "_DO_SPACES_SECRET_"
+            - name: DO_SPACES_NAME
+              value: "_DO_SPACES_NAME_"
 
 ---
 

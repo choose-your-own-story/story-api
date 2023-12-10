@@ -12,26 +12,19 @@ services:
     container_name: api-story-maker
     build:
       context: .
-      dockerfile: ./Dockerfile
+      dockerfile: ./DockerfileDev
     command: >
-      sh -c "yarn install && yarn tsc && yarn nodemon src/index.js"
+      sh -c "yarn tsc && yarn nodemon dist/index.js"
     working_dir: /app
     volumes:
-      - ./:/app/
+      - ./src:/app/src
       - ./storage:/storage
-    environment:
-      NODE_ENV: development.local
-      POSTGRES_HOST: ${POSTGRES_HOST}
-      POSTGRES_PORT: ${POSTGRES_PORT}
-      POSTGRES_USER: ${POSTGRES_API_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB}
-      SECRET: ${SECRET}
-      UPLOAD_STORAGE_PATH: ${UPLOAD_STORAGE_PATH}
-      CDN_HOST: ${CDN_HOST}
-      PUBLIC_PATH: ${PUBLIC_PATH}
-      POSTGRES_CA: ${TEMP_POSTGRES_CA}
-      ENVIRONMENT: local
+      - ./tsconfig.json:/app/tsconfig.json
+      - ./yarn.lock:/app/yarn.lock
+      - ./package.json:/app/package.json
+      - ./nodemon.json:/app/nodemon.json
+    env_file:
+      - .env
     logging: *default-logging
     ports:
       - 3000:3000

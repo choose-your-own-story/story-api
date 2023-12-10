@@ -4,7 +4,7 @@ import express = require('express');
 const jwt = require('jsonwebtoken');
 
 import multer  = require('multer');
-const upload = multer({ dest: process.env.UPLOAD_STORAGE_PATH });
+const upload = multer({ dest: '/tmp' });
 
 const publicPathRaw = process.env.PUBLIC_PATH || '/';
 const lastChar = publicPathRaw.charAt(publicPathRaw.length -1);
@@ -76,7 +76,8 @@ const cors = require('cors');
 
 const morgan = require('morgan');
 
-app.use(bodyParser.json());
+app.use(bodyParser.json({limit: '10mb'}));
+app.use(bodyParser.urlencoded({extended: true, limit: '10mb'}));
 app.use(cors());
 app.use(morgan('tiny'));
 app.use(checkToken);
@@ -94,8 +95,10 @@ import LibraryController from "./controllers/library";
 import LibraryRepository from "./repositories/library";
 
 const configuration = {
-  storagePath: process.env.UPLOAD_STORAGE_PATH,
-  cdnServer: process.env.CDN_HOST
+  doSpacesEndpoint: process.env.DO_SPACES_ENDPOINT,
+  doSpacesKey: process.env.DO_SPACES_KEY,
+  doSpacesSecret: process.env.DO_SPACES_SECRET,
+  doSpacesName: process.env.DO_SPACES_NAME
 };
 
 const postgreProvider = new PostgreProvider();
@@ -115,6 +118,10 @@ const libraryController = new LibraryController(router, libraryRepository, bookR
 
 console.log(`listening on ${publicPathNoTrailingSlash}`);
 app.use(publicPathNoTrailingSlash, router);
+
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+});
 
 app.listen(port, '0.0.0.0', () => {
   console.log(`History Maker app listening at http://0.0.0.0:${port}`)
