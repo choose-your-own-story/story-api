@@ -1,0 +1,39 @@
+{
+  "moduleFileExtensions": [
+    "js",
+    "json",
+    "ts"
+  ],
+  "rootDir": "./test",
+  "testRegex": ".*\\.spec\\.ts$",
+  "transform": {
+    "^.+\\.(t|j)s$": "ts-jest"
+  },
+  "collectCoverage" : true,
+  "collectCoverageFrom": [
+    "**/*.(t|j)s"
+  ],
+  "coveragePathIgnorePatterns": [
+    "node_modules",
+    "test-config",
+    "interfaces",
+    "generated",
+    "shared",
+    "utils/buildOpenApiServices",
+    "jestGlobalMocks.ts",
+    ".module.ts",
+    "<rootDir>/app/index.ts",
+    ".mock.ts",
+    ".dto.ts"
+  ],
+  "coverageDirectory": "../coverage",
+  "testEnvironment": "node",
+  "coverageThreshold":{
+    "global":{
+      "branches":90,
+      "functions":90,
+      "lines":90,
+      "staments":90
+    }
+  }
+}
