@@ -1,9 +1,8 @@
-import express = require('express');
-// import fileUpload = require('express-fileupload');
+import express, {NextFunction} from 'express';
 
-const jwt = require('jsonwebtoken');
+import { verify } from 'jsonwebtoken-esm';
 
-import multer  = require('multer');
+import multer from 'multer';
 const upload = multer({ dest: '/tmp' });
 
 const publicPathRaw = process.env.PUBLIC_PATH || '/';
@@ -12,9 +11,9 @@ const extraSlash = lastChar === '/' ? '' : '/';
 const publicPath = `${publicPathRaw}${extraSlash}`;
 const publicPathNoTrailingSlash = lastChar === '/' && publicPathRaw.length > 1 ? publicPathRaw.substring(0, publicPathRaw.length -1) : publicPathRaw;
 
-const checkToken = (req: express.Request, res: express.Response, next: Function): any => {
+function checkToken (req: express.Request, res: express.Response, next: NextFunction): any {
 
-  const secret = process.env.SECRET;
+  const secret = process.env.SECRET || '';
 
   const noneSecure = [
     { uri: `${publicPath}api/user/login`, method: 'POST' },
@@ -54,7 +53,7 @@ const checkToken = (req: express.Request, res: express.Response, next: Function)
     token = token.slice(7, token.length);
   }
 
-  jwt.verify(token, secret, (err: any, decoded: any) => {
+  verify(token, secret, (err: any, decoded: any) => {
     if (err && !noSecure) {
       return res.status(401).json({
         success: false,
@@ -65,34 +64,35 @@ const checkToken = (req: express.Request, res: express.Response, next: Function)
     req.decoded = decoded;
     next();
   });
-};
+}
 
 
 const app: express.Application = express();
 const port: number = 3000;
 
-const bodyParser = require('body-parser'); // instalar: npm install body-parser
-const cors = require('cors');
+import bodyParser from 'body-parser'; // instalar: npm install body-parser
 
-const morgan = require('morgan');
+import cors from 'cors';
+
+import morgan from 'morgan';
 
 app.use(bodyParser.json({limit: '10mb'}));
 app.use(bodyParser.urlencoded({extended: true, limit: '10mb'}));
-app.use(cors());
+app.use(cors);
 app.use(morgan('tiny'));
 app.use(checkToken);
 
-import BookController from './controllers/book';
-import BookRepository from './repositories/book';
-import UserRepository from './repositories/user';
-import PostgreProvider from './providers/postgres'
-import HomeRepository from "./repositories/home";
-import HomeController from "./controllers/home";
-import UserController from "./controllers/user";
-import UploadRepository from "./repositories/upload";
-import UploadController from "./controllers/upload";
-import LibraryController from "./controllers/library";
-import LibraryRepository from "./repositories/library";
+import BookController from './controllers/book.js';
+import BookRepository from './repositories/book.js';
+import UserRepository from './repositories/user.js';
+import PostgreProvider from './providers/postgres.js'
+import HomeRepository from "./repositories/home.js";
+import HomeController from "./controllers/home.js";
+import UserController from "./controllers/user.js";
+import UploadRepository from "./repositories/upload.js";
+import UploadController from "./controllers/upload.js";
+import LibraryController from "./controllers/library.js";
+import LibraryRepository from "./repositories/library.js";
 
 const configuration = {
   doSpacesEndpoint: process.env.DO_SPACES_ENDPOINT,
@@ -100,6 +100,7 @@ const configuration = {
   doSpacesSecret: process.env.DO_SPACES_SECRET,
   doSpacesName: process.env.DO_SPACES_NAME
 };
+
 
 const postgreProvider = new PostgreProvider();
 const bookRepository = new BookRepository(postgreProvider);
@@ -110,11 +111,11 @@ const libraryRepository = new LibraryRepository(postgreProvider);
 
 const router = express.Router();
 
-const bookController = new BookController(router, bookRepository);
-const homeController = new HomeController(router, homeRepository);
-const userController = new UserController(router, userRepository);
-const uploadController = new UploadController(router, upload, uploadRepository);
-const libraryController = new LibraryController(router, libraryRepository, bookRepository);
+new BookController(router, bookRepository);
+new HomeController(router, homeRepository);
+new UserController(router, userRepository);
+new UploadController(router, upload, uploadRepository);
+new LibraryController(router, libraryRepository, bookRepository);
 
 console.log(`listening on ${publicPathNoTrailingSlash}`);
 app.use(publicPathNoTrailingSlash, router);

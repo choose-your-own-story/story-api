@@ -1,5 +1,5 @@
 import UploadRepository from "../repositories/upload";
-import express = require('express');
+import express from 'express';
 import {NextFunction} from "express";
 
 class UploadController {

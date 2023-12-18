@@ -1,4 +1,4 @@
-import express = require('express');
+import express from 'express';
 
 import {ObjectCannedACL, PutObjectCommand, S3Client} from '@aws-sdk/client-s3';
 

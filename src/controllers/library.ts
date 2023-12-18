@@ -1,4 +1,4 @@
-import express = require('express');
+import express from 'express';
 import LibraryRepository from "../repositories/library";
 import BookRepository from "../repositories/book";
 
@@ -23,7 +23,7 @@ class LibraryController {
     }
 
     async listGenre(request: express.Request, response: express.Response) {
-        let idParent = request.query.idParent;
+        const idParent = request.query.idParent;
         const output = await this.libraryRepository.listGenre(idParent);
 
         response.status(200).send(output);

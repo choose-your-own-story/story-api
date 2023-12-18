@@ -1,5 +1,5 @@
-import express = require('express');
-import BookRepository from "../repositories/book";
+import express from 'express';
+import BookRepository from "../repositories/book.js";
 
 
 class BookController {

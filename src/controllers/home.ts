@@ -1,5 +1,5 @@
-import express = require('express');
-import HomeRepository from "../repositories/home";
+import express from 'express';
+import HomeRepository from "../repositories/home.js";
 
 
 class HomeController {

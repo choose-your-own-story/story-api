@@ -1,6 +1,6 @@
-import PostgresProvider from '../providers/postgres';
-import QueryLoader from "./helpers/query_loader";
-import SearchResult from './contracts/search_result'
+import PostgresProvider from '../providers/postgres.js';
+import QueryLoader from "./helpers/query_loader.js";
+import SearchResult from './contracts/search_result.js'
 
 class Genre {
     id: number;
@@ -67,7 +67,7 @@ class LibraryRepository {
     async addGenre(body: any) {
         const query = this.queryLoader.rq('add_genre');
         const name = body.name;
-        let idParent = body.idParent;
+        const idParent = body.idParent;
         const data = await this.databaseProvider.instance().query(query, [name, idParent]);
 
         const item = data.rows.map(function(item) {
@@ -83,7 +83,7 @@ class LibraryRepository {
     async delGenre(idGenre: number) {
         const query = this.queryLoader.rq('del_genre');
         try {
-            const data = await this.databaseProvider.instance().query(query, [idGenre]);
+            await this.databaseProvider.instance().query(query, [idGenre]);
             return 0
         }
         catch {

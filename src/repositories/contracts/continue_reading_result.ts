@@ -1,4 +1,4 @@
-import SearchResult from './search_result'
+import SearchResult from './search_result.js'
 
 class ContinueReadingResult extends SearchResult {
 

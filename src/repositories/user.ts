@@ -1,29 +1,26 @@
-import PostgresProvider from '../providers/postgres';
-import QueryLoader from "./helpers/query_loader";
-import SearchResult from "./contracts/search_result";
-import ContinueReadingResult from "./contracts/continue_reading_result";
-const jwt = require('jsonwebtoken');
-const { uuid } = require('uuidv4');
+import PostgresProvider from '../providers/postgres.js';
+import QueryLoader from "./helpers/query_loader.js";
+import SearchResult from "./contracts/search_result.js";
+import ContinueReadingResult from "./contracts/continue_reading_result.js";
+import { sign } from 'jsonwebtoken-esm';
 
 
 class UserRepository {
 
     databaseProvider: PostgresProvider;
     queryLoader: QueryLoader;
-    secret: string | undefined;
+    secret: string;
 
     constructor(databaseProvider: PostgresProvider) {
         this.databaseProvider = databaseProvider;
         this.queryLoader = new QueryLoader('user');
-        this.secret = process.env.SECRET;
+        this.secret = process.env.SECRET || '';
     }
 
     _jwtFromUserData(userData: any) {
-        const randomIdToken = uuid();
-
         // creamos el token con el que el usuario va a autenticarse en los
         // llamados a las api
-        const token = jwt.sign(
+        const token = sign(
             {
                 name: userData.name,
                 thumb: userData.thumb,

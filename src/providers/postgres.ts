@@ -5,15 +5,15 @@ class PostgresProvider {
   pool: pg.Pool;
 
   constructor() {
-    let sslOptionsOn ={
+    const sslOptionsOn ={
       rejectUnauthorized: false,
       ca: process.env.POSTGRES_CA
     };
-    let sslOptionsOff = false;
+    const sslOptionsOff = false;
 
-    let sslOptions = process.env.ENVIRONMENT === 'production'? sslOptionsOn: sslOptionsOff;
+    const sslOptions = process.env.ENVIRONMENT === 'production'? sslOptionsOn: sslOptionsOff;
 
-    let pgOptions = {
+    const pgOptions = {
       user: process.env.POSTGRES_USER,
       host: process.env.POSTGRES_HOST,
       database: process.env.POSTGRES_DB,

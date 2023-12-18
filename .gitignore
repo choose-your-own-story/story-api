@@ -113,3 +113,5 @@ k8s/k8s.yml
 certificates/
 
 *.js
+
+containers/api/.ash_history

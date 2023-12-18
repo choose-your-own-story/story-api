@@ -1,5 +1,5 @@
-import PostgresProvider from '../providers/postgres';
-import QueryLoader from "./helpers/query_loader";
+import PostgresProvider from '../providers/postgres.js';
+import QueryLoader from "./helpers/query_loader.js";
 
 
 class HomeRepository {

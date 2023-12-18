@@ -1,5 +1,4 @@
-import express = require('express');
-import BookRepository from "../repositories/book";
+import express from 'express';
 import UserRepository from "../repositories/user";
 
 
@@ -23,7 +22,7 @@ class UserController {
     async login(request: express.Request, response: express.Response) {
         const userName: string = request.body.name;
         const userPassword: string = request.body.password;
-        const output = await this.userRepository.login(userName, userPassword);;
+        const output = await this.userRepository.login(userName, userPassword);
 
         response.status(200).send(output);
     }

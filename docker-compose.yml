@@ -14,7 +14,7 @@ services:
       context: .
       dockerfile: ./DockerfileDev
     command: >
-      sh -c "yarn tsc && yarn nodemon dist/index.js"
+      sh -c "yarn tsc && yarn dev"
     working_dir: /app
     volumes:
       - ./src:/app/src
@@ -23,6 +23,8 @@ services:
       - ./yarn.lock:/app/yarn.lock
       - ./package.json:/app/package.json
       - ./nodemon.json:/app/nodemon.json
+      - ./.eslintrc.cjs:/app/.eslintrc.cjs
+      - ./containers/api/.ash_history:/home/node/.ash_history
     env_file:
       - .env
     logging: *default-logging

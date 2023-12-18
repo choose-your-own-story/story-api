@@ -1,5 +1,5 @@
-import PostgresProvider from '../providers/postgres';
-import QueryLoader from "./helpers/query_loader";
+import PostgresProvider from '../providers/postgres.js';
+import QueryLoader from "./helpers/query_loader.js";
 
 
 class SearchResult {
@@ -150,7 +150,7 @@ class BookRepository {
 
     async addBook(userId: number, userName: string, book: any) {
         const bookTitle: string = book.title;
-        const bookUserId: Number = userId;
+        const bookUserId: number = userId;
         const bookDescription: string = book.description;
         const bookCover: string = book.cover;
 
