@@ -24,16 +24,16 @@ jobs:
       - name: Run tests
         run: yarn test
       - name: Docker meta
-          id: meta
-          uses: docker/metadata-action@v5
-          with:
-            # list of Docker images to use as base name for tags
-            images: |
-              jotaram/story-maker-api
-            # generate Docker tags based on the following events/attributes
-            tags: |
-              type=ref,event=branch
-              type=semver,pattern={{version}}
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          # list of Docker images to use as base name for tags
+          images: |
+            jotaram/story-maker-api
+          # generate Docker tags based on the following events/attributes
+          tags: |
+            type=ref,event=branch
+            type=semver,pattern={{version}}
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
