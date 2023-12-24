@@ -37,34 +37,32 @@ spec:
             - containerPort: 80
           env:
             - name: SECRET
-              value: "secret"
+              value: "$(API_SECRET)"
             - name: PUBLIC_PATH
               value: "/"
-            - name: UPLOAD_STORAGE_PATH
-              value: "/static"
             - name: POSTGRES_USER
-              value: "story_maker_user"
+              value: "$(POSTGRES_USER)"
             - name: POSTGRES_PASSWORD
-              value: "_POSTGRES_PASSWORD_"
+              value: "$(POSTGRES_PASSWORD)"
             - name: POSTGRES_DB
-              value: "_POSTGRES_DB_"
+              value: "$(POSTGRES_DB)"
             - name: POSTGRES_HOST
-              value: "_POSTGRES_HOST_"
+              value: "$(POSTGRES_HOST)"
             - name: POSTGRES_PORT
-              value: "_POSTGRES_PORT_"
+              value: "$(POSTGRES_PORT)"
             - name: POSTGRES_CA
               valueFrom:
                 secretKeyRef:
                   name: postgres-ca
                   key: certificate
             - name: DO_SPACES_ENDPOINT
-              value: "nyc3.digitaloceanspaces.com"
+              value: "$(DO_SPACES_ENDPOINT)"
             - name: DO_SPACES_KEY
-              value: "_DO_SPACES_KEY_"
+              value: "$(DO_SPACES_KEY)"
             - name: DO_SPACES_SECRET
-              value: "_DO_SPACES_SECRET_"
+              value: "$(DO_SPACES_SECRET)"
             - name: DO_SPACES_NAME
-              value: "_DO_SPACES_NAME_"
+              value: "$(DO_SPACES_NAME)"
 
 ---
 

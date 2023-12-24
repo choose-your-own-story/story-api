@@ -9,7 +9,7 @@ on:
       - 'v*'
 
 jobs:
-  build:
+  build-and-deploy:
 
     runs-on: ubuntu-latest
 
@@ -50,3 +50,30 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+
+      - name: Install doctl
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+      - name: Set env vars
+        run: |
+          SECRET=${{ secrets.API_SECRET }}
+          PUBLIC_PATH=${{ secrets.PUBLIC_PATH }}
+          POSTGRES_USER=${{ secrets.POSTGRES_USER }}
+          POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_DB=${{ secrets.POSTGRES_DB }}
+          POSTGRES_HOST=${{ secrets.POSTGRES_HOST }}
+          POSTGRES_PORT=${{ secrets.POSTGRES_PORT }}
+          DO_SPACES_ENDPOINT=${{ secrets.DO_SPACES_ENDPOINT }}
+          DO_SPACES_KEY=${{ secrets.DO_SPACES_KEY }}
+          DO_SPACES_SECRET=${{ secrets.DO_SPACES_SECRET }}
+          DO_SPACES_NAME=${{ secrets.DO_SPACES_NAME }}
+
+      - name: Save DigitalOcean kubeconfig with short-lived credentials
+        run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 ${{ secrets.DO_K8S_CLUSTER_NAME }}
+
+      - name: Deploy to DigitalOcean Kubernetes
+        run: kubectl apply -f $GITHUB_WORKSPACE/k8s/k8s.yml
+
+      - name: Verify deployment
+        run: kubectl rollout status deployment/${{ secrets.DO_K8S_CLUSTER_NAME }}
