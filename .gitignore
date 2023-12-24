@@ -109,7 +109,6 @@ storage/
 
 postgres_data
 
-k8s/k8s.yml
 certificates/
 
 *.js

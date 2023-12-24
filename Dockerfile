@@ -9,4 +9,6 @@ WORKDIR /app
 COPY --from=base --chown=node:node /app/src/repositories/queries /app/src/repositories/queries
 COPY --from=base --chown=node:node /app/node_modules /app/node_modules
 COPY --from=base --chown=node:node /app/dist /app/dist
+COPY --from=base --chown=node:node /app/package.json /app/package.json
+
 CMD node /app/dist/index.js

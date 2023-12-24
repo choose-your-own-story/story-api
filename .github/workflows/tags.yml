@@ -3,8 +3,6 @@ name: CICD
 on:
   workflow_dispatch:
   push:
-    branches:
-      - 'main'
     tags:
       - 'v*'
 
@@ -32,7 +30,6 @@ jobs:
             jotaram/story-maker-api
           # generate Docker tags based on the following events/attributes
           tags: |
-            type=ref,event=branch
             type=semver,pattern={{version}}
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
@@ -54,26 +51,21 @@ jobs:
       - name: Install doctl
         uses: digitalocean/action-doctl@v2
         with:
-          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
-      - name: Set env vars
-        run: |
-          SECRET=${{ secrets.API_SECRET }}
-          PUBLIC_PATH=${{ secrets.PUBLIC_PATH }}
-          POSTGRES_USER=${{ secrets.POSTGRES_USER }}
-          POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
-          POSTGRES_DB=${{ secrets.POSTGRES_DB }}
-          POSTGRES_HOST=${{ secrets.POSTGRES_HOST }}
-          POSTGRES_PORT=${{ secrets.POSTGRES_PORT }}
-          DO_SPACES_ENDPOINT=${{ secrets.DO_SPACES_ENDPOINT }}
-          DO_SPACES_KEY=${{ secrets.DO_SPACES_KEY }}
-          DO_SPACES_SECRET=${{ secrets.DO_SPACES_SECRET }}
-          DO_SPACES_NAME=${{ secrets.DO_SPACES_NAME }}
+          token: ${{ secrets.DO_ACCESS_TOKEN }}
 
       - name: Save DigitalOcean kubeconfig with short-lived credentials
         run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 ${{ secrets.DO_K8S_CLUSTER_NAME }}
 
-      - name: Deploy to DigitalOcean Kubernetes
-        run: kubectl apply -f $GITHUB_WORKSPACE/k8s/k8s.yml
-
-      - name: Verify deployment
-        run: kubectl rollout status deployment/${{ secrets.DO_K8S_CLUSTER_NAME }}
+      - name: Deploy to DigitalOcean K8S
+        run: |
+          export SECRET=${{ secrets.API_SECRET }}
+          export POSTGRES_USER=${{ secrets.POSTGRES_USER }}
+          export POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
+          export POSTGRES_DB=${{ secrets.POSTGRES_DB }}
+          export POSTGRES_HOST=${{ secrets.POSTGRES_HOST }}
+          export POSTGRES_PORT=${{ secrets.POSTGRES_PORT }}
+          export DO_SPACES_ENDPOINT=${{ secrets.DO_SPACES_ENDPOINT }}
+          export DO_SPACES_KEY=${{ secrets.DO_SPACES_KEY }}
+          export DO_SPACES_SECRET=${{ secrets.DO_SPACES_SECRET }}
+          export DO_SPACES_NAME=${{ secrets.DO_SPACES_NAME }}
+          sh $GITHUB_WORKSPACE/k8s/install.sh
