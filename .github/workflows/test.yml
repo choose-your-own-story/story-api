@@ -34,8 +34,7 @@ jobs:
           tags: |
             type=ref,event=branch
             type=semver,pattern={{version}}
-          keys:
-            - tag
+          keys: tag
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
