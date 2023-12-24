@@ -69,7 +69,7 @@ jobs:
           DO_SPACES_KEY=${{ secrets.DO_SPACES_KEY }}
           DO_SPACES_SECRET=${{ secrets.DO_SPACES_SECRET }}
           DO_SPACES_NAME=${{ secrets.DO_SPACES_NAME }}
-          DOCKER_IMAGE_VERSION=$(echo "${{ steps.meta.outputs.tag }}")
+          DOCKER_IMAGE_VERSION=$(echo "${{ steps.meta.outputs.DOCKER_METADATA_OUTPUT_TAGS }}")
           echo $DOCKER_IMAGE_VERSION
 
       - name: Save DigitalOcean kubeconfig with short-lived credentials
