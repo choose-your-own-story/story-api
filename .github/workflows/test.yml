@@ -70,6 +70,7 @@ jobs:
           DO_SPACES_SECRET=${{ secrets.DO_SPACES_SECRET }}
           DO_SPACES_NAME=${{ secrets.DO_SPACES_NAME }}
           DOCKER_IMAGE_VERSION=$(echo "${{ steps.meta.outputs.tag }}")
+          echo $DOCKER_IMAGE_VERSION
 
       - name: Save DigitalOcean kubeconfig with short-lived credentials
         run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 ${{ secrets.DO_K8S_CLUSTER_NAME }}
