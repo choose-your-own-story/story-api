@@ -54,6 +54,8 @@ spec:
                 secretKeyRef:
                   name: postgres-ca
                   key: certificate
+            - name: ENVIRONMENT
+              value: "production"
             - name: DO_SPACES_ENDPOINT
               value: "$DO_SPACES_ENDPOINT"
             - name: DO_SPACES_KEY
