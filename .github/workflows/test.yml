@@ -73,5 +73,5 @@ jobs:
           export DO_SPACES_KEY=${{ secrets.DO_SPACES_KEY }}
           export DO_SPACES_SECRET=${{ secrets.DO_SPACES_SECRET }}
           export DO_SPACES_NAME=${{ secrets.DO_SPACES_NAME }}
-          export DOCKER_IMAGE_VERSION=$(echo "${{ steps.meta.outputs.DOCKER_METADATA_OUTPUT_TAGS }}")
+          export DOCKER_IMAGE_VERSION=${{ steps.meta.outputs.DOCKER_METADATA_OUTPUT_TAGS }}
           sh $GITHUB_WORKSPACE/k8s/install.sh

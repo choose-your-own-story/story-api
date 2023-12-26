@@ -31,7 +31,7 @@ spec:
     spec:
       containers:
         - name: story-maker-api
-          image: "$$DOCKER_IMAGE_VERSION"
+          image: "$DOCKER_IMAGE_VERSION"
           ports:
             - containerPort: 80
           env:
