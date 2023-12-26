@@ -1,16 +1,8 @@
-echo "a"
-echo $DOCKER_IMAGE_VERSION
-echo "b"
-echo $DOCKER_METADATA_OUTPUT_JSON_RAW
-echo "c"
-echo $DOCKER_IMAGE_VERSION_RAW
-echo "d"
-echo $steps.meta.outputs.DOCKER_METADATA_OUTPUT_JSON
-echo "e"
-echo $DOCKER_METADATA_OUTPUT_JSON
+DOCKER_IMAGE_VERSION_FIRST_ITEM=$DOCKER_METADATA_OUTPUT_JSON | jq '.tags[0]'
+DOCKER_IMAGE_VERSION=$(echo "$DOCKER_IMAGE_VERSION_FIRST_ITEM" | sed 's/\//\\\//g')
 
 sed -e "s/\$API_SECRET/$API_SECRET/g" $GITHUB_WORKSPACE/k8s/k8s.yml | \
-sed -e "s/\$DOCKER_IMAGE_VERSION/$(echo "$DOCKER_IMAGE_VERSION" | sed 's/\//\\\//g')/g" | \
+sed -e "s/\$DOCKER_IMAGE_VERSION/$DOCKER_IMAGE_VERSION/g" | \
 sed -e "s/\$POSTGRES_USER/$POSTGRES_USER/g" | \
 sed -e "s/\$POSTGRES_PASSWORD/$POSTGRES_PASSWORD/g" | \
 sed -e "s/\$POSTGRES_DB/$POSTGRES_DB/g" | \

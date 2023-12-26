@@ -54,7 +54,6 @@ jobs:
         uses: digitalocean/action-doctl@v2
         with:
           token: ${{ secrets.DO_ACCESS_TOKEN }}
-          DOCKER_METADATA_OUTPUT_JSON_RAW: ${{ steps.meta.outputs.DOCKER_METADATA_OUTPUT_JSON }}
 
       - name: Save DigitalOcean kubeconfig with short-lived credentials
         run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 ${{ secrets.DO_K8S_CLUSTER_NAME }}
@@ -71,6 +70,4 @@ jobs:
           export DO_SPACES_KEY=${{ secrets.DO_SPACES_KEY }}
           export DO_SPACES_SECRET=${{ secrets.DO_SPACES_SECRET }}
           export DO_SPACES_NAME=${{ secrets.DO_SPACES_NAME }}
-          export DOCKER_IMAGE_VERSION_RAW=$( $DOCKER_METADATA_OUTPUT_JSON_RAW | jq '.tags[0]' )
-          export DOCKER_IMAGE_VERSION=$DOCKER_IMAGE_VERSION_RAW
           sh $GITHUB_WORKSPACE/k8s/install.sh
