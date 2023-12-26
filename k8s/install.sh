@@ -1,7 +1,13 @@
+echo "a"
 echo $DOCKER_IMAGE_VERSION
+echo "b"
 echo $DOCKER_METADATA_OUTPUT_JSON_RAW
+echo "c"
 echo $DOCKER_IMAGE_VERSION_RAW
+echo "d"
 echo $steps.meta.outputs.DOCKER_METADATA_OUTPUT_JSON
+echo "e"
+echo $DOCKER_METADATA_OUTPUT_JSON
 
 sed -e "s/\$API_SECRET/$API_SECRET/g" $GITHUB_WORKSPACE/k8s/k8s.yml | \
 sed -e "s/\$DOCKER_IMAGE_VERSION/$(echo "$DOCKER_IMAGE_VERSION" | sed 's/\//\\\//g')/g" | \
