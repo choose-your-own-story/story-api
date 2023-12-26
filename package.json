@@ -35,7 +35,7 @@
     "test-with-coverage": "yarn nyc mocha 'test/**/*.js'",
     "lint": "eslint --ignore-path .gitignore .",
     "fix-lint": "eslint --fix --ignore-path .gitignore .",
-    "tsc": "tsc"
+    "build": "tsc"
   },
   "devDependencies": {
     "@tsconfig/node20": "^20.1.2",
