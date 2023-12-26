@@ -31,37 +31,37 @@ spec:
     spec:
       containers:
         - name: story-maker-api
-          image: jotaram/story-maker-api:1.0.9
+          image: "$$DOCKER_IMAGE_VERSION"
           ports:
             - containerPort: 80
           env:
             - name: SECRET
-              value: $API_SECRET
+              value: "$API_SECRET"
             - name: PUBLIC_PATH
               value: "/"
             - name: POSTGRES_USER
-              value: $POSTGRES_USER
+              value: "$POSTGRES_USER"
             - name: POSTGRES_PASSWORD
-              value: $POSTGRES_PASSWORD
+              value: "$POSTGRES_PASSWORD"
             - name: POSTGRES_DB
-              value: $POSTGRES_DB
+              value: "$POSTGRES_DB"
             - name: POSTGRES_HOST
-              value: $POSTGRES_HOST
+              value: "$POSTGRES_HOST"
             - name: POSTGRES_PORT
-              value: $POSTGRES_PORT
+              value: "$POSTGRES_PORT"
             - name: POSTGRES_CA
               valueFrom:
                 secretKeyRef:
                   name: postgres-ca
                   key: certificate
             - name: DO_SPACES_ENDPOINT
-              value: $DO_SPACES_ENDPOINT
+              value: "$DO_SPACES_ENDPOINT"
             - name: DO_SPACES_KEY
-              value: $DO_SPACES_KEY
+              value: "$DO_SPACES_KEY"
             - name: DO_SPACES_SECRET
-              value: $DO_SPACES_SECRET
+              value: "$DO_SPACES_SECRET"
             - name: DO_SPACES_NAME
-              value: $DO_SPACES_NAME
+              value: "$DO_SPACES_NAME"
 
 ---
 
