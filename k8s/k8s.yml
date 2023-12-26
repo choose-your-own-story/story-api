@@ -31,7 +31,7 @@ spec:
     spec:
       containers:
         - name: story-maker-api
-          image: $DOCKER_IMAGE_VERSION
+          image: jotaram/story-maker-api:1.0.9
           ports:
             - containerPort: 80
           env:
