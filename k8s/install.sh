@@ -1,3 +1,5 @@
+cat $GITHUB_WORKSPACE/k8s/k8s.yml
+
 sed -e "s/\$API_SECRET/$API_SECRET/g" $GITHUB_WORKSPACE/k8s/k8s.yml | \
 sed -e "s/\$DOCKER_IMAGE_VERSION/$DOCKER_IMAGE_VERSION/g" | \
 sed -e "s/\$PUBLIC_PATH/$PUBLIC_PATH/g" | \
