@@ -54,14 +54,12 @@ jobs:
         uses: digitalocean/action-doctl@v2
         with:
           token: ${{ secrets.DO_ACCESS_TOKEN }}
+          DOCKER_IMAGE_VERSION_RAW: ${{ steps.meta.outputs.DOCKER_METADATA_OUTPUT_TAGS }}
 
       - name: Save DigitalOcean kubeconfig with short-lived credentials
         run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 ${{ secrets.DO_K8S_CLUSTER_NAME }}
 
       - name: Deploy to DigitalOcean K8S
-        with:
-          build-args: |
-            DOCKER_METADATA_OUTPUT_TAGS
         run: |
           export SECRET=${{ secrets.API_SECRET }}
           export POSTGRES_USER=${{ secrets.POSTGRES_USER }}
@@ -73,5 +71,5 @@ jobs:
           export DO_SPACES_KEY=${{ secrets.DO_SPACES_KEY }}
           export DO_SPACES_SECRET=${{ secrets.DO_SPACES_SECRET }}
           export DO_SPACES_NAME=${{ secrets.DO_SPACES_NAME }}
-          export DOCKER_IMAGE_VERSION=${{ steps.meta.outputs.DOCKER_METADATA_OUTPUT_TAGS }}
+          export DOCKER_IMAGE_VERSION=$DOCKER_IMAGE_VERSION_RAW
           sh $GITHUB_WORKSPACE/k8s/install.sh
