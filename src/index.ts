@@ -78,8 +78,8 @@ import morgan from 'morgan';
 
 app.use(bodyParser.json({limit: '10mb'}));
 app.use(bodyParser.urlencoded({extended: true, limit: '10mb'}));
-app.use(cors);
-app.use(morgan('tiny'));
+app.use(cors());
+app.use(morgan('dev'));
 app.use(checkToken);
 
 import BookController from './controllers/book.js';
@@ -120,6 +120,7 @@ new LibraryController(router, libraryRepository, bookRepository);
 console.log(`listening on ${publicPathNoTrailingSlash}`);
 app.use(publicPathNoTrailingSlash, router);
 
+console.log('adding handler for errors');
 process.on('unhandledRejection', (reason, promise) => {
   console.error('Unhandled Rejection at:', promise, 'reason:', reason);
 });
