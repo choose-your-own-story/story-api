@@ -77,4 +77,17 @@ jobs:
         run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 ${{ secrets.DO_K8S_CLUSTER_NAME }}
 
       - name: Deploy to DigitalOcean Kubernetes
-        run: sh $GITHUB_WORKSPACE/k8s/install.sh
+        run: |
+          export SECRET=${{ secrets.API_SECRET }}
+          export PUBLIC_PATH=${{ secrets.PUBLIC_PATH }}
+          export POSTGRES_USER=${{ secrets.POSTGRES_USER }}
+          export POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
+          export POSTGRES_DB=${{ secrets.POSTGRES_DB }}
+          export POSTGRES_HOST=${{ secrets.POSTGRES_HOST }}
+          export POSTGRES_PORT=${{ secrets.POSTGRES_PORT }}
+          export DO_SPACES_ENDPOINT=${{ secrets.DO_SPACES_ENDPOINT }}
+          export DO_SPACES_KEY=${{ secrets.DO_SPACES_KEY }}
+          export DO_SPACES_SECRET=${{ secrets.DO_SPACES_SECRET }}
+          export DO_SPACES_NAME=${{ secrets.DO_SPACES_NAME }}
+          export DOCKER_IMAGE_VERSION=$(echo "${{ steps.meta.outputs.DOCKER_METADATA_OUTPUT_TAGS }}")
+          sh $GITHUB_WORKSPACE/k8s/install.sh
