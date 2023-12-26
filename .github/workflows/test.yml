@@ -62,7 +62,6 @@ jobs:
       - name: Deploy to DigitalOcean K8S
         run: |
           export SECRET=${{ secrets.API_SECRET }}
-          export PUBLIC_PATH=${{ secrets.PUBLIC_PATH }}
           export POSTGRES_USER=${{ secrets.POSTGRES_USER }}
           export POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
           export POSTGRES_DB=${{ secrets.POSTGRES_DB }}
