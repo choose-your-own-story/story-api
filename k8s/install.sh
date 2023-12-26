@@ -1,5 +1,5 @@
 sed -e "s/\$API_SECRET/$API_SECRET/g" ./k8s.yml | \
-sed -e "s/\$DOCKER_IMAGE_VERSION/$DOCKER_IMAGE_VERSION/g" | \
+sed -e "s/\$DOCKER_IMAGE_VERSION/$(echo "$DOCKER_IMAGE_VERSION" | sed 's/\//\\\//g')/g" | \
 sed -e "s/\$PUBLIC_PATH/$PUBLIC_PATH/g" | \
 sed -e "s/\$POSTGRES_USER/$POSTGRES_USER/g" | \
 sed -e "s/\$POSTGRES_PASSWORD/$POSTGRES_PASSWORD/g" | \
