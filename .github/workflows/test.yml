@@ -60,7 +60,7 @@ jobs:
       - name: Save DigitalOcean kubeconfig with short-lived credentials
         run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 ${{ secrets.DO_K8S_CLUSTER_NAME }}
 
-      - name: Deploy to DigitalOcean Kubernetes
+      - name: Deploy to DigitalOcean K8S
         run: |
           export SECRET=${{ secrets.API_SECRET }}
           export PUBLIC_PATH=${{ secrets.PUBLIC_PATH }}
