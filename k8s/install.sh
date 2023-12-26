@@ -11,4 +11,4 @@ sed -e "s/\$POSTGRES_PORT/$POSTGRES_PORT/g" | \
 sed -e "s/\$DO_SPACES_ENDPOINT/$DO_SPACES_ENDPOINT/g" | \
 sed -e "s/\$DO_SPACES_KEY/$DO_SPACES_KEY/g" | \
 sed -e "s/\$DO_SPACES_SECRET/$DO_SPACES_SECRET/g" | \
-sed -e "s/\$DO_SPACES_NAME/$DO_SPACES_NAME/g" | cat | kubectl apply -f -
+sed -e "s/\$DO_SPACES_NAME/$DO_SPACES_NAME/g" | cat
