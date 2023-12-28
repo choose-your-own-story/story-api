@@ -32,10 +32,3 @@ cp .env.dist .env
 ```shell script
 docker-compose up
 ``` 
-
-# Deployment To prod
-While standing in the root directory
-```shell script
-docker build -t jotaram/story-maker-api:<x.y.z> .
-docker image push jotaram/story-maker-api:<x.y.z>
-```
