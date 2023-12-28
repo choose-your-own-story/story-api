@@ -6,7 +6,7 @@ metadata:
     digitalocean.com/load-balancer-tags: story-maker-api-load-balancer
 spec:
   # GCE Ingress has to be 'NodePort' or 'LoadBalancer'
-  type: LoadBalancer
+  type: NodePort
   ports:
     - name: http
       port: 80
