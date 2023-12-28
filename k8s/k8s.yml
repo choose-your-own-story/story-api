@@ -2,6 +2,8 @@ apiVersion: v1
 kind: Service
 metadata:
   name: story-maker-api
+  annotations:
+    digitalocean.com/load-balancer-tags: story-maker-api-load-balancer
 spec:
   # GCE Ingress has to be 'NodePort' or 'LoadBalancer'
   type: LoadBalancer
