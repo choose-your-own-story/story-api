@@ -80,7 +80,7 @@ jobs:
         with:
           changelogFile: ${{ env.LB_CHANGELOG }}
           url: ${{ env.POSTGRES_URL }}
-          password: ${{ secrets.POSTGRES_PASSWORD }}
+          password: ${{ secrets.POSTGRES_ADMIN_PASSWORD }}
           username: ${{ secrets.POSTGRES_ADMIN_USER }}
           loglevel: debug
 
