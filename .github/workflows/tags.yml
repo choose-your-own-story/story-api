@@ -64,7 +64,7 @@ jobs:
           echo "POSTGRES_PASSWORD=$POSTGRES_PASSWORD" >> $GITHUB_ENV
           echo "POSTGRES_USER=$POSTGRES_USER" >> $GITHUB_ENV
           echo "POSTGRES_URL=jdbc:postgresql://$POSTGRES_HOST:$POSTGRES_PORT/$POSTGRES_DB?currentSchema=story_maker&ssl=true&sslmode=require&sslrootcert=$GITHUB_WORKSPACE/tmp_db_cert.cert" >> $GITHUB_ENV
-          echo "LIQUIBASE_CHANGELOG=$GITHUB_WORKSPACE/src/database/liquibase.xml" >> $GITHUB_ENV
+          echo "LB_CHANGELOG=$GITHUB_WORKSPACE/src/database/liquibase.xml" >> $GITHUB_ENV
       - name: "Add IP"
         uses: GarreauArthur/manage-digital-ocean-managed-database-trusted-sources-gh-action@main
         with:
@@ -75,7 +75,7 @@ jobs:
       - name: "Update database"
         uses: liquibase-github-actions/update@v4.25.1
         with:
-          changelogFile: ${{ env.LIQUIBASE_CHANGELOG }}
+          changelogFile: ${{ env.LB_CHANGELOG }}
           url: ${{ env.POSTGRES_URL }}
           password: ${{ secrets.POSTGRES_PASSWORD }}
           username: ${{ secrets.POSTGRES_USER }}
