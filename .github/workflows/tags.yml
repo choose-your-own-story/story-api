@@ -73,7 +73,7 @@ jobs:
           digitalocean_token: ${{ secrets.DO_ACCESS_TOKEN }}
 
       - name: Pause for 1 minute
-        run: sleep 60  # Sleep for 60 seconds (1 minute)
+        run: sleep 300  # Sleep for 60 seconds (1 minute)
 
       - name: "Update database"
         uses: liquibase-github-actions/update@v4.25.1
