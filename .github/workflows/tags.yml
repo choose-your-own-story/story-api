@@ -49,9 +49,10 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
 
       - name: "Init certs"
+        env:
+          POSTGRES_CERT: ${{ secrets.POSTGRES_CERT }}
         run: |
-          export POSTGRES_CERT=${{ secrets.POSTGRES_CERT }}
-          echo $POSTGRES_CERT > $GITHUB_WORKSPACE/tmp_db_cert.cert
+          echo "$POSTGRES_CERT" > $GITHUB_WORKSPACE/tmp_db_cert.cert
 
       - name: "Add IP"
         uses: GarreauArthur/manage-digital-ocean-managed-database-trusted-sources-gh-action@main
