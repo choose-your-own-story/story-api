@@ -48,15 +48,17 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
+      - name: "Init certs"
+        run: |
+          export POSTGRES_CERT=${{ secrets.POSTGRES_CERT }}
+          echo $POSTGRES_CERT > $GITHUB_WORKSPACE/tmp_db_cert.cert
+
       - name: "Add IP"
         uses: GarreauArthur/manage-digital-ocean-managed-database-trusted-sources-gh-action@main
         with:
           action: "add"
           database_id: ${{ secrets.POSTGRES_DATABASE_INSTANCE_ID }}
           digitalocean_token: ${{ secrets.DO_ACCESS_TOKEN }}
-
-      - name: "Init certs"
-        run: echo ${{ secrets.POSTGRES_CERT }} > $GITHUB_WORKSPACE/tmp_db_cert.cert
 
       - name: "Update database"
         uses: liquibase-github-actions/update@v4.25.1
@@ -66,15 +68,15 @@ jobs:
           password: ${{ secrets.POSTGRES_PASSWORD }}
           username: ${{ secrets.POSTGRES_USER }}
 
-      - name: "Remove certs"
-        run: rm $GITHUB_WORKSPACE/tmp_db_cert.cert
-
       - name: "Remove IP"
         uses: GarreauArthur/manage-digital-ocean-managed-database-trusted-sources-gh-action@main
         with:
           action: "remove"
           database_id: ${{ secrets.POSTGRES_DATABASE_INSTANCE_ID }}
           digitalocean_token: ${{ secrets.DO_ACCESS_TOKEN }}
+
+      - name: "Remove certs"
+        run: rm $GITHUB_WORKSPACE/tmp_db_cert.cert
 
       - name: Install doctl
         uses: digitalocean/action-doctl@v2
