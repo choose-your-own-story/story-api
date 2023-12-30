@@ -81,7 +81,7 @@ jobs:
           changelogFile: ${{ env.LB_CHANGELOG }}
           url: ${{ env.POSTGRES_URL }}
           password: ${{ secrets.POSTGRES_PASSWORD }}
-          username: ${{ secrets.POSTGRES_USER }}
+          username: ${{ secrets.POSTGRES_ADMIN_USER }}
 
       - name: "Remove IP"
         uses: GarreauArthur/manage-digital-ocean-managed-database-trusted-sources-gh-action@main
