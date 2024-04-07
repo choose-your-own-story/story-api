@@ -5,7 +5,9 @@ import jwt from 'jsonwebtoken';
 
 function checkToken(req: express.Request, res: express.Response, next: NextFunction): any {
 
+  console.log('validando con secret');
   const secret = process.env.SECRET || 'fake-secret';
+  console.log(secret);
 
   if (req.originalUrl.startsWith('/api/payment/seller/add')) {
     next();
@@ -13,7 +15,12 @@ function checkToken(req: express.Request, res: express.Response, next: NextFunct
   }
 
   // Express headers are auto converted to lowercase
+  console.log(req.headers);
+  console.log(req.headers.authorization);
+
   let token: string | undefined = req.headers.authorization;
+
+  console.log(token);
 
   if (!token)
     return res.status(401).json({
