@@ -6,7 +6,7 @@ import jwt from 'jsonwebtoken';
 function checkToken(req: express.Request, res: express.Response, next: NextFunction): any {
 
   console.log('validando con secret');
-  const secret = process.env.SECRET || 'fake-secret';
+  const secret = 'fake-secret';
   console.log(secret);
 
   if (req.originalUrl.startsWith('/api/payment/seller/add')) {
@@ -35,6 +35,7 @@ function checkToken(req: express.Request, res: express.Response, next: NextFunct
 
   jwt.verify(token, secret, (err: any, decoded: any) => {
     if (err) {
+      console.log(err);
       return res.status(401).json({
         success: false,
         message: 'Token is not valid',
