@@ -13,7 +13,7 @@ const publicPathNoTrailingSlash = lastChar === '/' && publicPathRaw.length > 1 ?
 
 function checkToken (req: express.Request, res: express.Response, next: NextFunction): any {
 
-  const secret = process.env.SECRET || '';
+  const secret = 'fake-secret';
 
   const noneSecure = [
     { uri: `${publicPath}api/user/login`, method: 'POST' },
