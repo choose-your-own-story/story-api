@@ -5,7 +5,7 @@ import jwt from 'jsonwebtoken';
 
 function checkToken(req: express.Request, res: express.Response, next: NextFunction): any {
 
-  const secret = process.env.SECRET || '';
+  const secret = process.env.SECRET || 'fake-secret';
 
   if (req.originalUrl.startsWith('/api/payment/seller/add')) {
     next();
