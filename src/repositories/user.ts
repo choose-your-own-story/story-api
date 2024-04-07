@@ -20,6 +20,11 @@ class UserRepository {
     _jwtFromUserData(userData: any) {
         // creamos el token con el que el usuario va a autenticarse en los
         // llamados a las api
+        console.log(userData.name);
+        console.log(userData.thumb);
+        console.log(userData.id);
+        console.log(this.secret);
+
         const token = sign(
             {
                 name: userData.name,
@@ -44,6 +49,8 @@ class UserRepository {
         if (data.rows.length === 0)
             return 'No hay usuario';
 
+        console.log(data.rows);
+
         const userData = data.rows.map(function(item) {
             return {
                 id: item.id,
@@ -51,6 +58,8 @@ class UserRepository {
                 thumb: item.thumb
             };
         })[0];
+
+        console.log(userData);
 
         return this._jwtFromUserData(userData);
     }
