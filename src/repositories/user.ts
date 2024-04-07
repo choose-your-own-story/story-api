@@ -2,7 +2,7 @@ import PostgresProvider from '../providers/postgres.js';
 import QueryLoader from "./helpers/query_loader.js";
 import SearchResult from "./contracts/search_result.js";
 import ContinueReadingResult from "./contracts/continue_reading_result.js";
-import { sign } from 'jsonwebtoken-esm';
+import jwt from 'jsonwebtoken';
 
 
 class UserRepository {
@@ -25,7 +25,7 @@ class UserRepository {
         console.log(userData.id);
         console.log(this.secret);
 
-        const token = sign(
+        const token = jwt.sign(
             {
                 name: userData.name,
                 thumb: userData.thumb,

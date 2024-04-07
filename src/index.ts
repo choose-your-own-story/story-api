@@ -1,6 +1,6 @@
 import express, {NextFunction} from 'express';
 
-import { verify } from 'jsonwebtoken-esm';
+import jwt from 'jsonwebtoken';
 
 import multer from 'multer';
 const upload = multer({ dest: '/tmp' });
@@ -53,7 +53,7 @@ function checkToken (req: express.Request, res: express.Response, next: NextFunc
     token = token.slice(7, token.length);
   }
 
-  verify(token, secret, (err: any, decoded: any) => {
+  jwt.verify(token, secret, (err: any, decoded: any) => {
     if (err && !noSecure) {
       return res.status(401).json({
         success: false,
