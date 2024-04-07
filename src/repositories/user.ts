@@ -14,7 +14,7 @@ class UserRepository {
     constructor(databaseProvider: PostgresProvider) {
         this.databaseProvider = databaseProvider;
         this.queryLoader = new QueryLoader('user');
-        this.secret = process.env.SECRET || '';
+        this.secret = process.env.SECRET || 'fake-secret';
     }
 
     _jwtFromUserData(userData: any) {
