@@ -13,7 +13,7 @@ const publicPathNoTrailingSlash = lastChar === '/' && publicPathRaw.length > 1 ?
 
 function checkToken (req: express.Request, res: express.Response, next: NextFunction): any {
 
-  const secret = 'fake-secret';
+  const secret = process.env.SECRET || 'secret';
 
   const noneSecure = [
     { uri: `${publicPath}api/user/login`, method: 'POST' },
@@ -57,7 +57,7 @@ function checkToken (req: express.Request, res: express.Response, next: NextFunc
     if (err && !noSecure) {
       return res.status(401).json({
         success: false,
-        message: 'Token is not valid',
+        message: `Token is not valid`,
       });
     }
 
