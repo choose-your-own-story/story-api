@@ -1,5 +1,3 @@
-version: "3.4"
-
 x-logging:
   &default-logging
   driver: "json-file"
@@ -43,12 +41,8 @@ services:
     volumes:
       - postgres_data:/var/lib/postgres
       - ./containers/postgres/initdb:/docker-entrypoint-initdb.d
-    environment:
-      POSTGRES_HOST: ${POSTGRES_HOST}
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB}
-      POSTGRES_PORT: ${POSTGRES_PORT}
+    env_file:
+      - .env
     ports:
       - "5432:5432"
     logging: *default-logging
@@ -58,13 +52,8 @@ services:
   liquibase:
     image: liquibase/liquibase:4.25
     command: /liquibase/liquibase --url="jdbc:postgresql://$POSTGRES_HOST:$POSTGRES_PORT/$POSTGRES_DB?currentSchema=story_maker&ssl=true&sslmode=require&sslrootcert=$POSTGRES_CERT_FILE" --changeLogFile=changelog/changelog.xml --logLevel=info update --userName=$POSTGRES_USER --password=$POSTGRES_PASSWORD
-    environment:
-      POSTGRES_HOST: ${POSTGRES_HOST}
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB}
-      POSTGRES_PORT: ${POSTGRES_PORT}
-      POSTGRES_CERT_FILE: /liquibase/postgres-ca.cert
+    env_file:
+      - .env
     links:
       - postgres
     volumes:
@@ -73,6 +62,21 @@ services:
       - ./certificates/postgres-ca.cert:/liquibase/postgres-ca.cert
     networks:
       - choose_your_own_adventure_network
+
+  liquibase-local:
+    image: liquibase/liquibase:4.25
+    command: |
+      liquibase --url=jdbc:postgresql://$POSTGRES_HOST:$POSTGRES_PORT/$POSTGRES_DB --changeLogFile=changelog/changelog.xml --logLevel=info update --userName=$POSTGRES_USER --password=$POSTGRES_PASSWORD
+    env_file:
+      - .env
+    links:
+      - postgres
+    volumes:
+      - ./src/database/liquibase.xml:/liquibase/changelog/changelog.xml
+      - ./src/database/scripts:/liquibase/changelog/scripts
+    networks:
+      - choose_your_own_adventure_network
+
 
 volumes:
   postgres_data:
