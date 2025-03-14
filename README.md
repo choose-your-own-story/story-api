@@ -30,5 +30,13 @@ cp .env.dist .env
 
 2. Run the command 
 ```shell script
-docker-compose up
+docker compose up api
 ``` 
+
+3. Update local database
+
+Update local config so to point to a local instance of the database (docker container)
+
+```
+docker compose up liquibase-local
+```
